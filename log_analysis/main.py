@@ -1,28 +1,33 @@
 from src.log_parser import LogParser
 from src.log_analysis import LogAnalysis
-from src.visualization import Visualizer
+from src.visualizer import Visualizer
+from dotenv import load_dotenv
+import os
+
+os.system('cls' if os.name == 'nt' else 'clear')
+load_dotenv()
+STATIC_PATH = os.getenv('STATIC_PATH')
+
+
 
 def main():
-    parser = LogParser(r"D:\Data Analysis Project\log_analysis\data\access.log")
-    log_df = parser.parse_logs(limit=2000000)
+    spark = LogParser.create_spark()
+    df = LogParser.parse_logs(spark, fr"{STATIC_PATH}\log_analysis\data\access.log")
 
-    # 2. Analysis
-    analysis = LogAnalysis(log_df)
+    analysis = LogAnalysis(df)
 
     top_ips = analysis.count_requests_per_ip()
-    print("Top IPs:\n", top_ips.head(5))
+    status_dist = analysis.status_code_distribution()
+    top_paths = analysis.top_requested_paths(10)
+    requests_by_hour = analysis.requests_per_hour()
 
-    status_codes = analysis.status_code_distribution()
-    print("\nStatus Codes:\n", status_codes)
+    top_ips.show(10)
+    status_dist.show()
+    top_paths.show()
+    requests_by_hour.show()
 
-    top_paths = analysis.top_requested_paths()
-    print("\nTop Paths:\n", top_paths)
-
-    hourly = analysis.requests_per_hour()
-
-    # 3. Visualization
-    # Visualizer.plot_status_distribution(status_codes)
-    # Visualizer.plot_requests_per_hour(hourly)
+    Visualizer.plot_status_distribution(status_dist)
+    Visualizer.plot_requests_per_hour(requests_by_hour)
     Visualizer.plot_top_paths(top_paths)
 
 if __name__ == "__main__":

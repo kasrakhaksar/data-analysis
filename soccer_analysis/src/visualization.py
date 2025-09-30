@@ -13,7 +13,7 @@ class Visualizer:
     @staticmethod
     def plot_radar_chart(row, features, team_name="Team"):
         values = row[features].values.flatten().tolist()
-        values += values[:1]  # برای بستن دایره
+        values += values[:1]
 
         angles = [n / float(len(features)) * 2 * pi for n in range(len(features))]
         angles += angles[:1]

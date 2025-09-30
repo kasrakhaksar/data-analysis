@@ -3,8 +3,8 @@ import matplotlib.pyplot as plt
 class Visualizer:
     @staticmethod
     def plot_status_distribution(df):
-        df_pandas = df.to_pandas()
-        df_pandas.plot.bar(x="status", y="count", legend=False, color="skyblue")
+        pdf = df.toPandas()
+        pdf.plot.bar(x="status", y="count", color="skyblue", legend=False)
         plt.title("Status Code Distribution")
         plt.xlabel("Status")
         plt.ylabel("Count")
@@ -12,8 +12,8 @@ class Visualizer:
 
     @staticmethod
     def plot_requests_per_hour(df):
-        df_pandas = df.to_pandas()
-        df_pandas.plot.bar(x="hour", y="count", legend=False, color="orange")
+        pdf = df.toPandas()
+        pdf.plot.bar(x="hour", y="count", color="orange", legend=False)
         plt.title("Requests per Hour")
         plt.xlabel("Hour")
         plt.ylabel("Requests")
@@ -21,8 +21,8 @@ class Visualizer:
 
     @staticmethod
     def plot_top_paths(df):
-        df_pandas = df.to_pandas()
-        df_pandas.plot.bar(x="path", y="count", legend=False, color="green")
+        pdf = df.toPandas()
+        pdf.plot.bar(x="path", y="count", color="green", legend=False)
         plt.title("Top Requested Paths")
         plt.xlabel("Path")
         plt.ylabel("Count")
