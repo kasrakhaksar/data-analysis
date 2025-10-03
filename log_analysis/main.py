@@ -1,21 +1,42 @@
+from pyspark.sql import SparkSession
 from src.log_parser import LogParser
 from src.log_analysis import LogAnalysis
 from src.visualizer import Visualizer
 from dotenv import load_dotenv
 import os
 
+
 os.system('cls' if os.name == 'nt' else 'clear')
 load_dotenv()
-STATIC_PATH = os.getenv('STATIC_PATH')
+
+endpoint = os.getenv('endpoint')
+access_key = os.getenv('access_key')
+secret_key = os.getenv('secret_key')
+
+log_path = f"{os.getenv('log_path')}/access.log"
 
 
 
 def main():
-    spark = LogParser.create_spark()
-    df = LogParser.parse_logs(spark, fr"{STATIC_PATH}\log_analysis\data\access.log")
+    spark = (
+        SparkSession.builder
+        .appName("Log Analysis")
+        .config("spark.jars.packages",
+                "org.apache.hadoop:hadoop-aws:3.3.4,com.amazonaws:aws-java-sdk-bundle:1.12.262")
+        .config("spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem")
+        .config("spark.hadoop.fs.s3a.access.key", access_key)
+        .config("spark.hadoop.fs.s3a.secret.key", secret_key)
+        .config("spark.hadoop.fs.s3a.endpoint", endpoint)
+        .config("spark.hadoop.fs.s3a.path.style.access", "true")
+        .config("spark.hadoop.fs.s3a.connection.ssl.enabled", "false")
+        .getOrCreate()
+    )
+
+
+
+    df = LogParser.parse_logs(spark, log_path)
 
     analysis = LogAnalysis(df)
-
     top_ips = analysis.count_requests_per_ip()
     status_dist = analysis.status_code_distribution()
     top_paths = analysis.top_requested_paths(10)
@@ -29,6 +50,7 @@ def main():
     Visualizer.plot_status_distribution(status_dist)
     Visualizer.plot_requests_per_hour(requests_by_hour)
     Visualizer.plot_top_paths(top_paths)
+
 
 if __name__ == "__main__":
     main()
