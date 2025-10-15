@@ -6,11 +6,10 @@ class LogParser:
 
     @staticmethod
     def create_spark(app_name="Log Analysis"):
-        """ایجاد سشن اسپارک"""
         return (
             SparkSession.builder
             .appName(app_name)
-            .master("local[*]")  # برای اجرای لوکال
+            .master("local[*]")
             .getOrCreate()
         )
 

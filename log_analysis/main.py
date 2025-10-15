@@ -6,7 +6,6 @@ from dotenv import load_dotenv
 import os
 
 
-os.system('cls' if os.name == 'nt' else 'clear')
 load_dotenv()
 
 endpoint = os.getenv('endpoint')
@@ -41,6 +40,7 @@ def main():
     )
 
 
+    os.system('cls' if os.name == 'nt' else 'clear')
     df = LogParser.parse_logs(spark, log_path)
 
     analysis = LogAnalysis(df)
