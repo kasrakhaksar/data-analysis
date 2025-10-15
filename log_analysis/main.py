@@ -16,19 +16,22 @@ secret_key = os.getenv('secret_key')
 log_path = f"{os.getenv('log_path')}/access.log"
 
 
-
 def main():
+
+
     spark = (
         SparkSession.builder
-        .appName("Log Analysis")
-        .config("spark.jars.packages",
-                "org.apache.hadoop:hadoop-aws:3.3.4,com.amazonaws:aws-java-sdk-bundle:1.12.262")
-        .config("spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem")
-        .config("spark.hadoop.fs.s3a.access.key", access_key)
-        .config("spark.hadoop.fs.s3a.secret.key", secret_key)
-        .config("spark.hadoop.fs.s3a.endpoint", endpoint)
+        .appName("LocalStack S3 Access")
+        .config(
+            "spark.jars.packages",
+            "org.apache.hadoop:hadoop-aws:3.3.4,com.amazonaws:aws-java-sdk-bundle:1.12.696"
+        )
+        .config("spark.hadoop.fs.s3a.endpoint", "http://localhost:4566")
+        .config("spark.hadoop.fs.s3a.access.key", "test")
+        .config("spark.hadoop.fs.s3a.secret.key", "test")
         .config("spark.hadoop.fs.s3a.path.style.access", "true")
         .config("spark.hadoop.fs.s3a.connection.ssl.enabled", "false")
+        .config("spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem")
         .getOrCreate()
     )
 
