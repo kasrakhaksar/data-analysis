@@ -13,10 +13,9 @@ class LogAnalysis:
 
     def top_requested_paths(self, n=10, filter_static=True):
         df_paths = self.df
+        
         if filter_static:
-            df_paths = df_paths.filter(
-                ~col("path").rlike(r"\.(jpg|jpeg|png|gif|ico|css|js|svg|woff|ttf|eot)$")
-            )
+            df_paths = df_paths.filter( ~col("path").rlike(r"\.(jpg|jpeg|png|gif|ico|css|js|svg|woff|ttf|eot|logo)$") )
         return df_paths.groupBy("path").count().orderBy(col("count").desc()).limit(n)
 
     def requests_per_hour(self):

@@ -12,7 +12,7 @@ class Visualizer:
 
     @staticmethod
     def plot_radar_chart(row, features, team_name="Team"):
-        values = row[features].values.flatten().tolist()
+        values = [row[feature] for feature in features]
         values += values[:1]
 
         angles = [n / float(len(features)) * 2 * pi for n in range(len(features))]
@@ -25,3 +25,4 @@ class Visualizer:
         ax.fill(angles, values, alpha=0.4)
         plt.title(f"Style Profile: {team_name}")
         plt.show()
+
