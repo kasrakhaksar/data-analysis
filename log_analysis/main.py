@@ -21,17 +21,24 @@ def main():
     spark = (
         SparkSession.builder
         .appName("Log Analysis")
-        .config("spark.jars.packages",
-                "org.apache.hadoop:hadoop-aws:3.3.4,com.amazonaws:aws-java-sdk-bundle:1.12.262")
+        .config("spark.jars.packages" , "org.apache.hadoop:hadoop-aws:3.3.4,com.amazonaws:aws-java-sdk-bundle:1.12.262")
         .config("spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem")
         .config("spark.hadoop.fs.s3a.access.key", access_key)
         .config("spark.hadoop.fs.s3a.secret.key", secret_key)
         .config("spark.hadoop.fs.s3a.endpoint", endpoint)
         .config("spark.hadoop.fs.s3a.path.style.access", "true")
         .config("spark.hadoop.fs.s3a.connection.ssl.enabled", "false")
+        .config("spark.hadoop.fs.s3a.aws.credentials.provider","org.apache.hadoop.fs.s3a.SimpleAWSCredentialsProvider")
+        .config("spark.hadoop.fs.s3a.connection.timeout", "60000")
+        .config("spark.hadoop.fs.s3a.connection.establish.timeout", "5000")
+        .config("spark.hadoop.fs.s3a.socket.timeout", "60000")
+        .config("spark.hadoop.fs.s3a.attempts.maximum", "3")
+        .config("spark.hadoop.fs.s3a.paging.maximum", "1000")
+        .config("spark.hadoop.fs.s3a.multipart.purge.age", "86400000")
+        .config("spark.hadoop.fs.s3a.committer.staging.tmp.cleanup.delay", "86400000") 
+        .config("spark.hadoop.fs.s3a.threads.keepalivetime", "60000")
         .getOrCreate()
     )
-
 
 
     df = LogParser.parse_logs(spark, log_path)
