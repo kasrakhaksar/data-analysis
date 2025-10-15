@@ -51,13 +51,13 @@ def main():
 
     os.system('cls' if os.name == 'nt' else 'clear')
 
-    # top_ips.show(10)
-    # status_dist.show()
-    # top_paths.show()
-    # requests_by_hour.show()
+    top_ips.show(10)
+    status_dist.show()
+    top_paths.show()
+    requests_by_hour.show()
 
-    # Visualizer.plot_status_distribution(status_dist)
-    # Visualizer.plot_requests_per_hour(requests_by_hour)
+    Visualizer.plot_status_distribution(status_dist)
+    Visualizer.plot_requests_per_hour(requests_by_hour)
     Visualizer.plot_top_paths(top_paths)
 
 
