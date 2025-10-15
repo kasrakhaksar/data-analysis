@@ -40,7 +40,6 @@ def main():
     )
 
 
-    os.system('cls' if os.name == 'nt' else 'clear')
     df = LogParser.parse_logs(spark, log_path)
 
     analysis = LogAnalysis(df)
@@ -49,13 +48,16 @@ def main():
     top_paths = analysis.top_requested_paths(10)
     requests_by_hour = analysis.requests_per_hour()
 
-    top_ips.show(10)
-    status_dist.show()
-    top_paths.show()
-    requests_by_hour.show()
 
-    Visualizer.plot_status_distribution(status_dist)
-    Visualizer.plot_requests_per_hour(requests_by_hour)
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+    # top_ips.show(10)
+    # status_dist.show()
+    # top_paths.show()
+    # requests_by_hour.show()
+
+    # Visualizer.plot_status_distribution(status_dist)
+    # Visualizer.plot_requests_per_hour(requests_by_hour)
     Visualizer.plot_top_paths(top_paths)
 
 
