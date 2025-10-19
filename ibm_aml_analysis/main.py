@@ -1,7 +1,7 @@
 from pyspark.sql import SparkSession
 from src.ibm_parser import HIParser
 from src.ibm_analysis import HIAnalysis
-from src.visualizer import Visualizer
+from src.visualization import Visualizer
 from dotenv import load_dotenv
 import os
 

@@ -1,7 +1,7 @@
 from pyspark.sql import SparkSession
 from src.log_parser import LogParser
 from src.log_analysis import LogAnalysis
-from src.visualizer import Visualizer
+from src.visualization import Visualizer
 from dotenv import load_dotenv
 import os
 
