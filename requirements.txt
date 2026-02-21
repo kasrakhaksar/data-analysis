@@ -1,4 +1,5 @@
 altair==5.5.0
+asynch==0.3.1
 attrs==25.3.0
 bcrypt==5.0.0
 boto==2.49.0
@@ -6,6 +7,9 @@ cachetools==6.2.1
 certifi==2025.10.5
 cffi==2.0.0
 charset-normalizer==3.4.4
+ciso8601==2.3.3
+clickhouse-driver==0.2.10
+clickhouse-sqlalchemy==0.3.2
 contourpy==1.3.3
 cryptography==46.0.3
 cycler==0.12.1
@@ -19,6 +23,7 @@ google-cloud-core==2.4.3
 google-crc32c==1.7.1
 google-resumable-media==2.7.2
 googleapis-common-protos==1.71.0
+greenlet==3.3.2
 grpcio==1.76.0
 grpcio-status==1.76.0
 idna==3.11
@@ -28,6 +33,8 @@ joblib==1.5.2
 jsonschema==4.25.1
 jsonschema-specifications==2025.9.1
 kiwisolver==1.4.9
+leb128==1.0.9
+lz4==4.4.5
 MarkupSafe==3.0.3
 matplotlib==3.10.6
 narwhals==2.5.0
@@ -59,10 +66,13 @@ scikit-learn==1.7.2
 scipy==1.16.2
 seaborn==0.13.2
 six==1.17.0
+SQLAlchemy==2.0.46
 threadpoolctl==3.6.0
 typing_extensions==4.15.0
 tzdata==2025.2
+tzlocal==5.3.1
 urllib3==2.5.0
 vega-datasets==0.9.0
 wcwidth==0.2.14
 wrapt==1.17.3
+zstd==1.5.7.3
