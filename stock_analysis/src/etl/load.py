@@ -2,10 +2,8 @@ from sqlalchemy import create_engine
 import pandas as pd
 
 
-def load_to_clickhouse(df: pd.DataFrame):
-    engine = create_engine(
-        "clickhouse+native://user:user123@localhost:9000/myapp"
-    )
+def load_to_clickhouse(df: pd.DataFrame , connection : str):
+    engine = create_engine(connection)
 
     df.to_sql(
         "stock_prices",

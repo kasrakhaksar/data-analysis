@@ -2,7 +2,7 @@ import json
 import pandas as pd
 from pathlib import Path
 
-RAW_DATA_PATH = Path("/home/kasra/Python Codes/data-analysis/stock_analysis/src/data/raw")
+RAW_DATA_PATH = Path("stock_analysis/src/data/raw")
 
 def extract_latest_prices() -> pd.DataFrame:
     files = sorted(RAW_DATA_PATH.glob("stock_prices_*.json"))
