@@ -14,7 +14,6 @@ def run():
     df = transform_prices(df)
     run_data_quality_checks(df)
     load_to_clickhouse(df , CLICKHOUSE_CONNECTION)
-    print(f"ETL finished. Data saved to ClickHouse")
 
 if __name__ == "__main__":
     run()

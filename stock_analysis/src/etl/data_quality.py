@@ -1,7 +1,11 @@
 import pandas as pd
 import numpy as np
+from logs.logger import Logger
+
 
 def run_data_quality_checks(df: pd.DataFrame):
+    logger = Logger('etl.log')
+
     errors = []
 
     if df.empty:
@@ -14,6 +18,8 @@ def run_data_quality_checks(df: pd.DataFrame):
         errors.append("volume not to be zero")
 
     if errors:
-        raise ValueError(f"Data Quality Errors: {errors}")
+        logger.log(f"Data Quality Errors: {errors}")
+
+        return False
 
     return True
