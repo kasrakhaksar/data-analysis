@@ -23,7 +23,7 @@ class StockPriceCrawler(BaseCrawler):
         }
 
 
-        today_date_for_filename = "20260218"
+        today_date_for_filename = self.base_url.split('/')[-1]
         file_path = f"stock_analysis/src/data/raw/stock_prices_{today_date_for_filename}.json"
         
         try:

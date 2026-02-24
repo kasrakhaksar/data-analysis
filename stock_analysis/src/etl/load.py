@@ -1,16 +1,12 @@
-from sqlalchemy import create_engine
 import pandas as pd
+from db.database import ClickHouseDB
 from logs.logger import Logger
 
 
-def load_to_clickhouse(df: pd.DataFrame , connection : str):
+def load_to_clickhouse(df: pd.DataFrame, clickhouse_connection: str):
 
     logger = Logger('etl.log')
-
-    try:
-        engine = create_engine(connection)
-    except Exception as e:
-        logger.log(f'Database Connection Error : {e}', level="ERROR")
+    engine = ClickHouseDB(clickhouse_connection)
 
     try:
         df.to_sql(
@@ -19,7 +15,6 @@ def load_to_clickhouse(df: pd.DataFrame , connection : str):
             if_exists="append",
             index=False  
         )
-
-        logger.log("ETL finished. Data saved to ClickHouse")
+        logger.log("ETL finished successfully. Data saved to ClickHouse")
     except Exception as e:
-        logger.log(f'Database Insert Error : {e}', level="ERROR")
+        logger.log(f"Database Insert Error: {e}", level="ERROR")

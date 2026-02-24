@@ -7,13 +7,11 @@ import os
 
 load_dotenv()
 
-def run():
-    CLICKHOUSE_CONNECTION = os.getenv('CLICKHOUSE_CONNECTION')
+if __name__ == "__main__":
+
+    clickhouse_connection = os.getenv('CLICKHOUSE_CONNECTION')
 
     df = extract_latest_prices()
     df = transform_prices(df)
     run_data_quality_checks(df)
-    load_to_clickhouse(df , CLICKHOUSE_CONNECTION)
-
-if __name__ == "__main__":
-    run()
+    load_to_clickhouse(df, clickhouse_connection)
