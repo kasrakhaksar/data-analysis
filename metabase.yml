@@ -1,0 +1,79 @@
+version: '3.8'
+
+services:
+  # -------------------------------------------------
+  # Your Existing PostgreSQL Service (for Metabase Metadata)
+  # -------------------------------------------------
+  postgres:
+    image: postgres:13-alpine
+    container_name: metabase_postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=metabase
+      - POSTGRES_PASSWORD=your_strong_db_password  # <-- Use your actual password
+      - POSTGRES_DB=metabase
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+    networks:
+      - metabase-net
+
+  # -------------------------------------------------
+  # Your Existing Metabase Service (UPDATED TO CONNECT TO CLICKHOUSE)
+  # -------------------------------------------------
+  metabase:
+    image: metabase/metabase:latest
+    container_name: metabase_app
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - MB_JETTY_SECRET=your_very_long_and_secret_jwt_key  # <-- Use your actual secret
+      
+      # --- POSTGRES CONFIG (Metadata DB) ---
+      - MB_DATABASE_HOST=postgres
+      - MB_DATABASE_PORT=5432
+      - MB_DATABASE_USER=metabase
+      - MB_DATABASE_PASSWORD=your_strong_db_password # Must match postgres password
+      - MB_DATABASE_DBNAME=metabase
+      
+      # --- CLICKHOUSE CONFIG (Data Source) ---
+      # The host is the name of your ClickHouse container defined below (my_clickhouse)
+      - CLUSTER_HOST=my_clickhouse 
+      - CLUSTER_PORT=9000  # Default native client port for ClickHouse
+      - CLUSTER_USER=default # Or your specific ClickHouse user
+      - CLUSTER_PASSWORD=your_clickhouse_password # Your ClickHouse password
+      - CLUSTER_DBNAME=your_database_name # The database you want to query in ClickHouse
+      
+    volumes:
+      - ./metabase_data:/metabase-data
+    depends_on:
+      - postgres
+      - my_clickhouse # Make sure Metabase waits for ClickHouse to start
+    networks:
+      - metabase-net
+
+  # -------------------------------------------------
+  # New ClickHouse Service (Assuming you want to define it here for consistency)
+  # If you are running this separately, you can skip this service definition, 
+  # but ensure it's on the 'metabase-net' network.
+  # -------------------------------------------------
+  my_clickhouse:
+    image: clickhouse/clickhouse-server:latest
+    container_name: my_clickhouse
+    restart: always
+    environment:
+      - CLICKHOUSE_USER=default
+      - CLICKHOUSE_PASSWORD=your_clickhouse_password # <-- CHANGE THIS
+      - CLICKHOUSE_DB=your_database_name
+    ports:
+      # Expose ports if you need to connect to it directly from your host machine
+      - "8123:8123" # HTTP Port
+      - "9000:9000" # Native Client Port (Used by Metabase)
+    volumes:
+      - ./clickhouse_data:/var/lib/clickhouse
+    networks:
+      - metabase-net
+
+networks:
+  metabase-net:
+    driver: bridge
