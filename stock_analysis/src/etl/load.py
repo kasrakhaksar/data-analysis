@@ -5,7 +5,7 @@ from logs.logger import Logger
 
 def load_to_clickhouse(df: pd.DataFrame, clickhouse_connection: str):
 
-    logger = Logger('etl.log')
+    logger = Logger('db.log')
     engine = ClickHouseDB(clickhouse_connection)
 
     try:
